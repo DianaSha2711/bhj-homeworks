@@ -17,18 +17,20 @@ class Game {
   }
 
   registerEvents() {
-    
     document.addEventListener('keydown', (event) => {
-  
-       if (pressedKey.length !== 1) {
+      const pressedKey = event.key;
+      
+      if (pressedKey.length !== 1 || event.ctrlKey || event.altKey || event.metaKey) {
         return;
       }
       
-    
+
+      if (!this.currentSymbol) {
+        return;
+      }
       const currentChar = this.currentSymbol.textContent.toLowerCase();
       const pressedChar = pressedKey.toLowerCase();
-      
-    
+     
       if (currentChar === pressedChar) {
         this.success();
       } else {
@@ -38,30 +40,33 @@ class Game {
   }
 
   success() {
-    if(this.currentSymbol.classList.contains("symbol_current")) {
-      this.currentSymbol.classList.remove("symbol_current");
-    }
+
+    this.currentSymbol.classList.remove("symbol_current");
+
     this.currentSymbol.classList.add('symbol_correct');
+
     this.currentSymbol = this.currentSymbol.nextElementSibling;
+
 
     if (this.currentSymbol !== null) {
       this.currentSymbol.classList.add('symbol_current');
       return;
     }
-
     if (++this.winsElement.textContent === 10) {
       alert('Победа!');
       this.reset();
+    } else {
+      this.setNewWord();
     }
-    this.setNewWord();
   }
 
   fail() {
-    if (++this.lossElement.textContent === 5) {
+    if (++this.lossElement.textContent === 3) {
       alert('Вы проиграли!');
       this.reset();
+    } else {
+      this.setNewWord();
     }
-    this.setNewWord();
   }
 
   setNewWord() {
@@ -92,7 +97,7 @@ class Game {
     const html = [...word]
       .map(
         (s, i) =>
-          <span class="symbol ${i === 0 ? 'symbol_current': ''}">${s}</span>
+          `<span class="symbol ${i === 0 ? 'symbol_current' : ''}">${s}</span>`
       )
       .join('');
     this.wordElement.innerHTML = html;
@@ -102,4 +107,3 @@ class Game {
 }
 
 new Game(document.getElementById('game'));
-
