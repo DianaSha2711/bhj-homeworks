@@ -1,6 +1,6 @@
-unction initDropdowns() {
+function initDropdowns() {
   
-  const dropdowns = document.querySelectorAll('.dropdown');
+  const dropdowns = document.querySelectorAll('.dropdown')
   
   dropdowns.forEach(dropdown => {
 
@@ -65,3 +65,4 @@ unction initDropdowns() {
 
 
 document.addEventListener('DOMContentLoaded', initDropdowns);
+
